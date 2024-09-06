@@ -10,7 +10,7 @@ import torch
 import torch.nn as nn
 from openfold.model.structure_module import StructureModule
 
-from esm.esmfold.v1.tri_self_attn_block import TriangularSelfAttentionBlock
+from fairesm.esmfold.v1.tri_self_attn_block import TriangularSelfAttentionBlock
 
 
 @dataclass
@@ -154,7 +154,9 @@ class FoldingTrunk(nn.Module):
         # where the chunk_size is the size of the chunks, so 128 would mean to parse 128-lengthed chunks.
         self.chunk_size = chunk_size
 
-    def forward(self, seq_feats, pair_feats, true_aa, residx, mask, no_recycles: T.Optional[int] = None):
+    def forward(
+        self, seq_feats, pair_feats, true_aa, residx, mask, no_recycles: T.Optional[int] = None
+    ):
         """
         Inputs:
           seq_feats:     B x L x C            tensor of sequence features

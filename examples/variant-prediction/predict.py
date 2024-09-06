@@ -9,7 +9,7 @@ import string
 
 import torch
 
-from esm import Alphabet, FastaBatchedDataset, ProteinBertModel, pretrained, MSATransformer
+from fairesmimport Alphabet, FastaBatchedDataset, ProteinBertModel, pretrained, MSATransformer
 import pandas as pd
 from tqdm import tqdm
 from Bio import SeqIO

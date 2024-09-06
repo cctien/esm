@@ -6,14 +6,14 @@
 from setuptools import setup
 
 
-with open("esm/version.py") as infile:
+with open("fairesm/version.py") as infile:
     exec(infile.read())
 
 with open("README.md") as f:
     readme = f.read()
 
 extras = {
-    "esmfold": [ # OpenFold does not automatically pip install requirements, so we add them here.
+    "esmfold": [  # OpenFold does not automatically pip install requirements, so we add them here.
         "biopython",
         "deepspeed==0.5.9",
         "dm-tree",
@@ -26,15 +26,15 @@ extras = {
 }
 
 sources = {
-    "esm": "esm",
-    "esm.model": "esm/model",
-    "esm.inverse_folding": "esm/inverse_folding",
-    "esm.esmfold.v1": "esm/esmfold/v1",
-    "esm.scripts": "scripts"
+    "fairesm": "fairesm",
+    "fairesm.model": "fairesm/model",
+    "fairesm.inverse_folding": "fairesm/inverse_folding",
+    "fairesm.esmfold.v1": "fairesm/esmfold/v1",
+    "fairesm.scripts": "scripts",
 }
 
 setup(
-    name="fair-esm",
+    name="fairesm",
     version=version,
     description="Evolutionary Scale Modeling (esm): Pretrained language models for proteins. From Facebook AI Research.",
     long_description=readme,

@@ -10,7 +10,7 @@ import torch
 import torch.nn.functional as F
 from torch import Tensor, nn
 from torch.nn import Parameter
-from esm.rotary_embedding import RotaryEmbedding
+from fairesm.rotary_embedding import RotaryEmbedding
 
 import uuid
 
@@ -265,9 +265,7 @@ class MultiheadAttention(nn.Module):
             k = torch.cat([k, self.bias_k.repeat(1, bsz, 1)])
             v = torch.cat([v, self.bias_v.repeat(1, bsz, 1)])
             if attn_mask is not None:
-                attn_mask = torch.cat(
-                    [attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1
-                )
+                attn_mask = torch.cat([attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1)
             if key_padding_mask is not None:
                 key_padding_mask = torch.cat(
                     [
@@ -339,9 +337,7 @@ class MultiheadAttention(nn.Module):
             k = torch.cat([k, k.new_zeros((k.size(0), 1) + k.size()[2:])], dim=1)
             v = torch.cat([v, v.new_zeros((v.size(0), 1) + v.size()[2:])], dim=1)
             if attn_mask is not None:
-                attn_mask = torch.cat(
-                    [attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1
-                )
+                attn_mask = torch.cat([attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1)
             if key_padding_mask is not None:
                 key_padding_mask = torch.cat(
                     [
@@ -395,9 +391,11 @@ class MultiheadAttention(nn.Module):
         attn = self.out_proj(attn)
         attn_weights: Optional[Tensor] = None
         if need_weights:
-            attn_weights = attn_weights_float.view(
-                bsz, self.num_heads, tgt_len, src_len
-            ).type_as(attn).transpose(1, 0)
+            attn_weights = (
+                attn_weights_float.view(bsz, self.num_heads, tgt_len, src_len)
+                .type_as(attn)
+                .transpose(1, 0)
+            )
             if not need_head_weights:
                 # average attention weights over heads
                 attn_weights = attn_weights.mean(dim=0)
@@ -427,9 +425,7 @@ class MultiheadAttention(nn.Module):
                 (batch_size, src_len - prev_key_padding_mask.size(1)),
                 device=prev_key_padding_mask.device,
             )
-            new_key_padding_mask = torch.cat(
-                [prev_key_padding_mask.float(), filler.float()], dim=1
-            )
+            new_key_padding_mask = torch.cat([prev_key_padding_mask.float(), filler.float()], dim=1)
         elif key_padding_mask is not None:
             filler = torch.zeros(
                 (batch_size, src_len - key_padding_mask.size(1)),
